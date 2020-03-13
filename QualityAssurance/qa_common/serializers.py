@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from qa_common import models
 
-class UserLoginSerializer(serializers.ModelSerializer):
+class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.UserLogin
+        model = models.UserInfo
         fields = '__all__'

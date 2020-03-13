@@ -18,4 +18,6 @@ from django.urls import path,re_path,include
 from qa_common import views
 urlpatterns = [
     path('api/v1/login', views.Login.as_view()),
+    re_path(r'^api/v1/userhub/(?P<user>\w{1,8})$',views.UserHub.as_view()),
+    path('api/v1/search',views.SearchUser.as_view())
 ]
