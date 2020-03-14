@@ -15,10 +15,12 @@ class BugListView(APIView):
     """
     def get(self,request,version_id,*args,**kwargs):
         bug_query = BugDetail.objects.filter(version_id=version_id)
+        bug_count = bug_query.count()
         page_obj = LimitOffset()
         bug_page = page_obj.paginate_queryset(queryset=bug_query,request=request,view=self)
         bug_list = serializers.BugDetailSerializer(bug_page,many=True)
         return Response({
+            'total':bug_count,
             'status':{'code':code.success_code[0],'msg':code.success_code[1]},
             'data':bug_list.data
         })

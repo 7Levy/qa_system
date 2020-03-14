@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'qa_common',
     'qa_defect_management',
+    'qa_version_management',
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
