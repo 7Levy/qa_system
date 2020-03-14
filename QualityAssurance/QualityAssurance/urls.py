@@ -18,9 +18,10 @@ from django.urls import path,re_path,include
 from qa_common import views
 from qa_defect_management import views as view_defect
 urlpatterns = [
-    path('api/v1/login', views.Login.as_view()),
-    re_path(r'^api/v1/userhub/(?P<user>\w{1,8})$',views.UserHub.as_view()),
+    path('api/login', views.Login.as_view()),
+    re_path(r'^api/userhub/(?P<user>\w{1,8})$',views.UserHub.as_view()),
     path('api/v1/search',views.SearchUser.as_view()),
-    re_path(r'^api/v1/buglist/(?P<version_id>\w{1,8})$',view_defect.BugListView.as_view()),
-    re_path(r'^api/v1/bugdetail/(?P<bug_id>\w{1,8})$',view_defect.BugDetailView.as_view())
+    re_path(r'^api/buglist/(?P<version_id>\w{1,8})$',view_defect.BugListView.as_view()),
+    re_path(r'^api/bugdetail/(?P<bug_id>\w{1,8})$',view_defect.BugDetailView.as_view()),
+    path('api/bug/management',view_defect.BugManageView.as_view())
 ]

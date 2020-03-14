@@ -1,6 +1,3 @@
-from django.db import models
-
-# Create your models here.
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -12,6 +9,7 @@ from django.db import models
 
 
 class BugDetail(models.Model):
+    bug_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=32, blank=True, null=True)
     version_id = models.IntegerField(blank=True, null=True)
     presenter = models.CharField(max_length=32, blank=True, null=True)
@@ -31,8 +29,9 @@ class BugDetail(models.Model):
 
 
 
+
+
 class VersionDetail(models.Model):
-    id = models.IntegerField(primary_key=True)
     version_name = models.CharField(max_length=255, blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)

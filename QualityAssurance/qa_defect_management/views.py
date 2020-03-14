@@ -35,3 +35,36 @@ class BugDetailView(APIView):
             'status':{'code':code.success_code[0],'msg':code.success_code[1]},
             'data':bug_detail.data
         })
+
+class BugManageView(APIView):
+    authentication_classes = []
+    """
+    BUG管理：新建BUG、编辑BUG、删除BUG
+    """
+    def post(self,request,*args,**kwargs):
+        s = serializers.BugDetailSerializer(data=request.data)
+        try:
+            duplicate_title = BugDetail.objects.get(title=request.data['title'])
+            return Response({
+                "status":{'code':code.error_2006[0],'msg':code.error_2006[1]}
+            })
+        except:
+            if s.is_valid():
+                s.save()
+                return Response({
+                    "status":{'code':code.success_code[0],'msg':code.success_code[1]}
+                })
+    def put(self,request,*args,**kwargs):
+        s_query = BugDetail.objects.get(bug_id=request.data['bug_id'])
+        s = serializers.BugDetailSerializer(data=request.data,instance=s_query)
+        if s.is_valid():
+            s.save()
+            return Response({
+                "status": {'code': code.success_code[0], 'msg': code.success_code[1]}
+            })
+    def delete(self,request,*args,**kwargs):
+        bug_query = BugDetail.objects.get(bug_id=request.data['bug_id'])
+        bug_query.delete()
+        return Response({
+            "status":{'code':code.success_code[0],'msg':code.success_code[1]}
+        })
