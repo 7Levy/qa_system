@@ -15,14 +15,14 @@ class SprintListView(APIView):
         sprint_query_s = serializers.SprintSerializer(sprint_query,many=True)
         return Response({
             'status':{'code':code.success_code[0],'msg':code.success_code[1]},
-            'data':sprint_query.data
+            'data':sprint_query_s.data
         })
 
 class SprintDeatilView(APIView):
     authentication_classes = []
-    def get(self,sprint_id,*args,**kwargs):
-        sprint_query = SprintRequirements.objects.get(sprint_id=sprint_id)
-        sprint_query_s = serializers.SprintSerializer(sprint_query)
+    def get(self,request,sprint_id,*args,**kwargs):
+        sprint_query = SprintRequirements.objects.filter(sprint_id=sprint_id)
+        sprint_query_s = serializers.SprintRequirementsSerializer(sprint_query,many=True)
         return Response({
             'status':{'code':code.success_code[0],'msg':code.success_code[1]},
             'data':sprint_query_s.data
@@ -30,7 +30,7 @@ class SprintDeatilView(APIView):
 
 class DemandDeatilView(APIView):
     authentication_classes = []
-    def get(self,demand_id,*args,**kwargs):
+    def get(self,request,demand_id,*args,**kwargs):
         demand_query = SprintRequirements.objects.get(sdemand_id=demand_id)
         demand_query_s = serializers.SprintRequirementsSerializer(demand_query)
         return Response({
