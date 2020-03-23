@@ -9,6 +9,9 @@ from qa_common.code import code
 
 class ProductListView(APIView):
     authentication_classes = []
+    """
+    列出产品订单的列表
+    """
     def get(self,request,*args,**kwargs):
         product_query = Product.objects.all()
         product_query_s = serializers.ProductSerializer(product_query,many=True)
@@ -19,6 +22,9 @@ class ProductListView(APIView):
 
 class ProductDeatilView(APIView):
     authentication_classes = []
+    """
+    列出当前订单下的需求
+    """
     def get(self,request,product_id,*args,**kwargs):
         product_query = ProductRequirements.objects.filter(product_id=product_id)
         product_query_s = serializers.ProductRequirementsSerializer(product_query,many=True)
@@ -29,6 +35,9 @@ class ProductDeatilView(APIView):
 
 class DemandDeatilView(APIView):
     authentication_classes = []
+    """
+    展示当前需求的详情
+    """
     def get(self,request,demand_id,*args,**kwargs):
         demand_query = ProductRequirements.objects.get(demand_id=demand_id)
         demand_query_s = serializers.ProductRequirementsSerializer(demand_query)
@@ -78,7 +87,7 @@ class ProductDemandView(APIView):
     def post(self,request,*args,**kwargs):
         s = serializers.ProductRequirementsSerializer(data=request.data)
         try:
-            iterate = ProductRequirements.objects.get(demanid_id=request.data['demand_id'])
+            iterate = ProductRequirements.objects.get(demanid_content=request.data['demand_content'])
             return Response({
                 "status":{'code':code.error_2006[0],'msg':code.error_2006[1]}
             })

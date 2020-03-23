@@ -46,7 +46,7 @@ class SprintManageView(APIView):
     def post(self,request,*args,**kwargs):
         s = serializers.SprintSerializer(data=request.data)
         try:
-            iterate = Sprint.objects.get(sprint_id=request.data['sprint_id'])
+            iterate = Sprint.objects.get(sprint_title=request.data['sprint_title'])
             return Response({
                 "status":{'code':code.error_2006[0],'msg':code.error_2006[1]}
             })
@@ -79,7 +79,7 @@ class SprintDemandView(APIView):
     def post(self,request,*args,**kwargs):
         s = serializers.SprintRequirementsSerializer(data=request.data)
         try:
-            iterate = SprintRequirements.objects.get(sdemand_id=request.data['sdemand_id'])
+            iterate = SprintRequirements.objects.get(sdemand_content=request.data['sdemand_content'])
             return Response({
                 "status":{'code':code.error_2006[0],'msg':code.error_2006[1]}
             })
@@ -90,7 +90,7 @@ class SprintDemandView(APIView):
                     "status":{'code':code.success_code[0],'msg':code.success_code[1]}
                 })
     def put(self,request,*args,**kwargs):
-        s_query = SprintRequirements.objects.get(sdemand_id=request.data['demand_id'])
+        s_query = SprintRequirements.objects.get(sdemand_id=request.data['sdemand_id'])
         s = serializers.SprintRequirementsSerializer(data=request.data,instance=s_query)
         if s.is_valid():
             s.save()
@@ -98,7 +98,7 @@ class SprintDemandView(APIView):
                 "status": {'code': code.success_code[0], 'msg': code.success_code[1]}
             })
     def delete(self,request,*args,**kwargs):
-        demand_query = SprintRequirements.objects.get(sdemand_id=request.data['demand_id'])
+        demand_query = SprintRequirements.objects.get(sdemand_id=request.data['sdemand_id'])
         demand_query.delete()
         return Response({
             "status":{'code':code.success_code[0],'msg':code.success_code[1]}

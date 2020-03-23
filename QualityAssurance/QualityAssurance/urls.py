@@ -39,14 +39,14 @@ urlpatterns = [
     path('api/product',view_product.ProductListView.as_view()),
     re_path(r'^api/product/detail/(?P<product_id>\w{1,8})$',view_product.ProductDeatilView.as_view()),
     re_path(r'^api/product/demand/detail/(?P<demand_id>\w{1,8})$',view_product.DemandDeatilView.as_view()),
-    path('api/product/management',view_product.ProductManageView.as_view()),#测试到这
+    path('api/product/management',view_product.ProductManageView.as_view()),
     path('api/product/demand/management',view_product.ProductDemandView.as_view()),
 
     #冲刺订单
     path('api/sprint', view_sprint.SprintListView.as_view()),
     re_path(r'^api/sprint/detail/(?P<sprint_id>\w{1,8})$', view_sprint.SprintDeatilView.as_view()),
-    re_path(r'^api/sprint/demand/detail/(?P<demand_id>\w{1,8})$', view_product.DemandDeatilView.as_view()),
-    path('api/product/management', view_product.ProductManageView.as_view()),
-    path('api/product/demand/management', view_product.ProductDemandView.as_view()),
+    re_path(r'^api/sprint/demand/detail/(?P<demand_id>\w{1,8})$', view_sprint.DemandDeatilView.as_view()),
+    path('api/sprint/management', view_sprint.SprintManageView.as_view()),
+    path('api/sprint/demand/management', view_sprint.SprintDemandView.as_view()),
 
 ]
