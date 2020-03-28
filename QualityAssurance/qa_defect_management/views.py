@@ -31,7 +31,7 @@ class BugDetailView(APIView):
     BUG详细信息
     """
     def get(self,request,bug_id,*args,**kwargs):
-        bug_detail_query = BugDetail.objects.get(id=bug_id)
+        bug_detail_query = BugDetail.objects.get(bug_id=bug_id)
         bug_detail = serializers.BugDetailSerializer(bug_detail_query)
         return Response({
             'status':{'code':code.success_code[0],'msg':code.success_code[1]},

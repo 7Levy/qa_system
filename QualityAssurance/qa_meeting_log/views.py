@@ -25,7 +25,7 @@ class MeetingDetailView(APIView):
     """
     获取某个立会的详情
     """
-    def get(self,meeting_id,*args,**kwargs):
+    def get(self,request,meeting_id,*args,**kwargs):
         meeting_query = MeetingRecord.objects.get(meeting_id=meeting_id)
         meeting_query_s = serializers.MeetingRecordSerializer(meeting_query)
         return Response({
@@ -41,7 +41,7 @@ class MeetingManageView(APIView):
     def post(self,request,*args,**kwargs):
         s = serializers.MeetingRecordSerializer(data=request.data)
         try:
-            iterate = MeetingRecord.objects.get(meeting_id=request.data['meeting_id'])
+            iterate = MeetingRecord.objects.get(meeting_title=request.data['meeting_title'])
             return Response({
                 "status":{'code':code.error_2006[0],'msg':code.error_2006[1]}
             })
@@ -52,7 +52,7 @@ class MeetingManageView(APIView):
                     "status":{'code':code.success_code[0],'msg':code.success_code[1]}
                 })
     def put(self,request,*args,**kwargs):
-        s_query = MeetingRecord.objects.get(bug_id=request.data['meeting_id'])
+        s_query = MeetingRecord.objects.get(meeting_id=request.data['meeting_id'])
         s = serializers.MeetingRecordSerializer(data=request.data,instance=s_query)
         if s.is_valid():
             s.save()
