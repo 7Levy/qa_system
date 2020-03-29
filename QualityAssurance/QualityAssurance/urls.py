@@ -21,14 +21,25 @@ from qa_defect_management import views as view_defect
 from qa_meeting_log import views as view_meeting
 from qa_product_backlog import views as view_product
 from qa_sprint_backlog import views as view_sprint
+from qa_version_management import views as view_version
+from qa_case import views as view_case
 urlpatterns = [
+    #公共模块
     path('api/time',server_time.GetCurrentTime.as_view()),
     path('api/login', views.Login.as_view()),
     re_path(r'^api/userhub/(?P<user>\w{1,8})$',views.UserHub.as_view()),
     path('api/v1/search',views.SearchUser.as_view()),
-    re_path(r'^api/buglist/(?P<version_id>\w{1,8})$',view_defect.BugListView.as_view()),
-    re_path(r'^api/bugdetail/(?P<bug_id>\w{1,8})$',view_defect.BugDetailView.as_view()),
+    #缺陷管理
+    re_path(r'^api/bug/(?P<version_id>\w{1,8})$',view_defect.BugListView.as_view()),
+    re_path(r'^api/bug/detail/(?P<bug_id>\w{1,8})$',view_defect.BugDetailView.as_view()),
     path('api/bug/management',view_defect.BugManageView.as_view()),
+    # 用例管理
+    re_path(r'^api/case/(?P<version_id>\w{1,8})$', view_case.CaseListView.as_view()),
+    re_path(r'^api/case/detail/(?P<case_id>\w{1,8})$', view_case.CaseDetailView.as_view()),
+    path('api/case/management', view_case.CaseManageView.as_view()),
+    #版本管理
+    path('api/version',view_version.VersionManagement.as_view()),
+
 
     #立会接口
     path('api/meeting/record',view_meeting.MeetingListView.as_view()),

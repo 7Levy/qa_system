@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'qa_common',
+    'qa_case',
     'qa_defect_management',
     'qa_product_backlog',
     'qa_sprint_backlog',

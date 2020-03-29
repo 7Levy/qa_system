@@ -87,7 +87,7 @@ class ProductDemandView(APIView):
     def post(self,request,*args,**kwargs):
         s = serializers.ProductRequirementsSerializer(data=request.data)
         try:
-            iterate = ProductRequirements.objects.get(demanid_content=request.data['demand_content'])
+            iterate = ProductRequirements.objects.get(demand_content=request.data['demand_content'])
             return Response({
                 "status":{'code':code.error_2006[0],'msg':code.error_2006[1]}
             })

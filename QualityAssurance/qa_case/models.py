@@ -1,6 +1,8 @@
 
 from django.db import models
 
+
+
 class CaseDetail(models.Model):
     case_id = models.AutoField(primary_key=True)
     version_id = models.IntegerField(blank=True, null=True)

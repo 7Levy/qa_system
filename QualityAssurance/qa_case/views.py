@@ -1,5 +1,5 @@
-from qa_test_case.models import CaseDetail
-from qa_test_case import serializers
+from qa_case.models import CaseDetail
+from qa_case import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db import connection
@@ -18,7 +18,7 @@ class CaseListView(APIView):
         case_count = case_query.count()
         page_obj = LimitOffset()
         case_page = page_obj.paginate_queryset(queryset=case_query,request=request,view=self)
-        case_list = serializers.CaseSerializer(case_page,many=True)
+        case_list = serializers.CaseDetailSerializer(case_page,many=True)
         return Response({
             'total':case_count,
             'status':{'code':code.success_code[0],'msg':code.success_code[1]},
@@ -32,7 +32,7 @@ class CaseDetailView(APIView):
     """
     def get(self,request,case_id,*args,**kwargs):
         case_detail_query = CaseDetail.objects.get(case_id=case_id)
-        case_detail = serializers.CaseSerializer(case_detail_query)
+        case_detail = serializers.CaseDetailSerializer(case_detail_query)
         return Response({
             'status':{'code':code.success_code[0],'msg':code.success_code[1]},
             'data':case_detail.data
@@ -44,7 +44,7 @@ class CaseManageView(APIView):
     用例管理：新建、编辑、删除
     """
     def post(self,request,*args,**kwargs):
-        s = serializers.CaseSerializer(data=request.data)
+        s = serializers.CaseDetailSerializer(data=request.data)
         try:
             duplicate_title = CaseDetail.objects.get(case_name=request.data['case_name'])
             return Response({
@@ -58,7 +58,7 @@ class CaseManageView(APIView):
                 })
     def put(self,request,*args,**kwargs):
         s_query = CaseDetail.objects.get(case_id=request.data['case_id'])
-        s = serializers.CaseSerializer(data=request.data,instance=s_query)
+        s = serializers.CaseDetailSerializer(data=request.data,instance=s_query)
         if s.is_valid():
             s.save()
             return Response({
