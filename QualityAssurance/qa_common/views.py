@@ -1,4 +1,4 @@
-from qa_common.models import UserInfo
+from qa_common.models import UserInfo,BehaviorRecord
 from qa_common import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -24,6 +24,20 @@ class Login(APIView):
         token = create_token({'id': user_object.id, 'user': user_object.account})
         queryset.last_login = login_time
         queryset.save()
+        #行为记录
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        behavior = BehaviorRecord(
+            user_id=queryset.id,
+            user_name=queryset.name,
+            ip_addr=ip,
+            behavior="登录",
+            behavior_time=queryset.last_login
+        )
+        behavior.save()
         return Response({
             "current_user": {"user": user, "name": s.data['name'], "user_id": s.data['id'], "login_time": login_time,
                              "department_name": s.data['department_name'], "department_id": s.data['department_id'],
@@ -39,6 +53,14 @@ class UserHub(APIView):
     """
     def get(self,request,user,format=None):
         user_obj = UserInfo.objects.get(id=user)
+        time = datetime.datetime.now()
+        behavior = BehaviorRecord(
+            user_id=user_obj.id,
+            user_name=user_obj.name,
+            behavior="打开个人资料",
+            behavior_time=time
+        )
+        behavior.save()
         return Response({
             "status":{"code":code.success_code[0],"msg":code.success_code[1]},
             "data":{"id":user_obj.id,"name":user_obj.name,"email":user_obj.account,"department":user_obj.department_name,"position":user_obj.position}
@@ -78,6 +100,16 @@ class MemberList(APIView):
     def get(self, request, format=None):
         query = UserInfo.objects.all()
         s = serializers.UserInfoSerializer(query,many=True)
+        return Response({
+            "data":s.data
+        })
+
+
+class QueryBehavior(APIView):
+    authentication_classes = []
+    def get(self,request,user_id,format=None):
+        query = BehaviorRecord.objects.filter(user_id=user_id)
+        s = serializers.BehaviorRecordSerializer(query,many=True)
         return Response({
             "data":s.data
         })

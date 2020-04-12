@@ -32,6 +32,7 @@ urlpatterns = [
     path('api/v1/search',views.SearchUser.as_view()),
     path('api/member/count',views.CountMemeber.as_view()),
     path('api/member',views.MemberList.as_view()),
+    re_path(r"^api/behavior/(?P<user_id>\w{1,8})$",views.QueryBehavior.as_view()),
     #缺陷管理
     re_path(r'^api/bug/(?P<version_id>\w{1,8})$',view_defect.BugListView.as_view()),
     re_path(r'^api/bug/detail/(?P<bug_id>\w{1,8})$',view_defect.BugDetailView.as_view()),

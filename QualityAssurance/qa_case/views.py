@@ -1,6 +1,7 @@
 from qa_case.models import CaseDetail
 from qa_case import serializers
 from rest_framework.views import APIView
+from qa_common.models import UserInfo,BehaviorRecord
 from rest_framework.response import Response
 from django.db import connection
 import datetime
@@ -44,6 +45,14 @@ class CaseManageView(APIView):
     用例管理：新建、编辑、删除
     """
     def post(self,request,*args,**kwargs):
+        time = datetime.datetime.now()
+        behavior = BehaviorRecord(
+            user_id=1,
+            user_name="方圻程",
+            behavior="新建用例",
+            behavior_time=time
+        )
+        behavior.save()
         s = serializers.CaseDetailSerializer(data=request.data)
         try:
             duplicate_title = CaseDetail.objects.get(case_name=request.data['case_name'])
@@ -57,6 +66,14 @@ class CaseManageView(APIView):
                     "status":{'code':code.success_code[0],'msg':code.success_code[1]}
                 })
     def put(self,request,*args,**kwargs):
+        time = datetime.datetime.now()
+        behavior = BehaviorRecord(
+            user_id=1,
+            user_name="方圻程",
+            behavior="修改用例",
+            behavior_time=time
+        )
+        behavior.save()
         s_query = CaseDetail.objects.get(case_id=request.data['case_id'])
         s = serializers.CaseDetailSerializer(data=request.data,instance=s_query)
         if s.is_valid():
@@ -65,6 +82,14 @@ class CaseManageView(APIView):
                 "status": {'code': code.success_code[0], 'msg': code.success_code[1]}
             })
     def delete(self,request,*args,**kwargs):
+        time = datetime.datetime.now()
+        behavior = BehaviorRecord(
+            user_id=1,
+            user_name="方圻程",
+            behavior="删除用例",
+            behavior_time=time
+        )
+        behavior.save()
         case_query = CaseDetail.objects.get(case_id=request.data['case_id'])
         case_query.delete()
         return Response({

@@ -1,4 +1,5 @@
 from qa_defect_management.models import BugDetail,VersionDetail
+from qa_common.models import UserInfo,BehaviorRecord
 from qa_defect_management import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -30,6 +31,7 @@ class BugDetailView(APIView):
     """
     BUG详细信息
     """
+
     def get(self,request,bug_id,*args,**kwargs):
         bug_detail_query = BugDetail.objects.get(bug_id=bug_id)
         bug_detail = serializers.BugDetailSerializer(bug_detail_query)
@@ -44,6 +46,14 @@ class BugManageView(APIView):
     BUG管理：新建BUG、编辑BUG、删除BUG
     """
     def post(self,request,*args,**kwargs):
+        time = datetime.datetime.now()
+        behavior = BehaviorRecord(
+            user_id=1,
+            user_name="方圻程",
+            behavior="新建BUG",
+            behavior_time=time
+        )
+        behavior.save()
         s = serializers.BugDetailSerializer(data=request.data)
         try:
             duplicate_title = BugDetail.objects.get(title=request.data['title'])
@@ -57,6 +67,14 @@ class BugManageView(APIView):
                     "status":{'code':code.success_code[0],'msg':code.success_code[1]}
                 })
     def put(self,request,*args,**kwargs):
+        time = datetime.datetime.now()
+        behavior = BehaviorRecord(
+            user_id=1,
+            user_name="方圻程",
+            behavior="修改BUG",
+            behavior_time=time
+        )
+        behavior.save()
         s_query = BugDetail.objects.get(bug_id=request.data['bug_id'])
         s = serializers.BugDetailSerializer(data=request.data,instance=s_query)
         if s.is_valid():
@@ -65,6 +83,14 @@ class BugManageView(APIView):
                 "status": {'code': code.success_code[0], 'msg': code.success_code[1]}
             })
     def delete(self,request,*args,**kwargs):
+        time = datetime.datetime.now()
+        behavior = BehaviorRecord(
+            user_id=1,
+            user_name="方圻程",
+            behavior="删除BUG",
+            behavior_time=time
+        )
+        behavior.save()
         bug_query = BugDetail.objects.get(bug_id=request.data['bug_id'])
         bug_query.delete()
         return Response({

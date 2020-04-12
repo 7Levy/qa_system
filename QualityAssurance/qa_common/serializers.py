@@ -5,3 +5,8 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserInfo
         fields = '__all__'
+
+class BehaviorRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.BehaviorRecord
+        fields = '__all__'
