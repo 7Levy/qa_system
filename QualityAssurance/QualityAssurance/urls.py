@@ -22,6 +22,7 @@ from qa_meeting_log import views as view_meeting
 from qa_product_backlog import views as view_product
 from qa_sprint_backlog import views as view_sprint
 from qa_version_management import views as view_version
+from qa_interface_test import views as view_interface
 from qa_case import views as view_case
 urlpatterns = [
     #公共模块
@@ -29,6 +30,8 @@ urlpatterns = [
     path('api/login', views.Login.as_view()),
     re_path(r'^api/userhub/(?P<user>\w{1,8})$',views.UserHub.as_view()),
     path('api/v1/search',views.SearchUser.as_view()),
+    path('api/member/count',views.CountMemeber.as_view()),
+    path('api/member',views.MemberList.as_view()),
     #缺陷管理
     re_path(r'^api/bug/(?P<version_id>\w{1,8})$',view_defect.BugListView.as_view()),
     re_path(r'^api/bug/detail/(?P<bug_id>\w{1,8})$',view_defect.BugDetailView.as_view()),
@@ -59,5 +62,12 @@ urlpatterns = [
     re_path(r'^api/sprint/demand/detail/(?P<demand_id>\w{1,8})$', view_sprint.DemandDeatilView.as_view()),
     path('api/sprint/management', view_sprint.SprintManageView.as_view()),
     path('api/sprint/demand/management', view_sprint.SprintDemandView.as_view()),
+
+
+    #自动化测试
+    path('api/auto/interface',view_interface.AutoInterfaceTest.as_view()),
+    re_path(r'^api/auto/sendmail/(?P<receiver_id>\w{1,8})$',view_interface.SendMail.as_view()),
+    re_path(r'^api/auto/exec/interface/(?P<test_id>\w{1,8})$', view_interface.ExecRecordTest.as_view()),
+
 
 ]

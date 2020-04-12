@@ -52,3 +52,32 @@ class SearchUser(APIView):
         user_list = UserInfo.objects.filter(name__contains=request.data['search_name'])
         s = serializers.UserInfoSerializer(user_list, many=True)
         return Response(s.data)
+
+class CountMemeber(APIView):
+    authentication_classes = []
+    """
+    统计团队成员数量
+    """
+    def get(self,request,format=None):
+        count_top = UserInfo.objects.filter(type=3).count()
+        count_product = UserInfo.objects.filter(type=2).count()
+        count_programmer = UserInfo.objects.filter(type=1).count()
+
+        return Response({
+            "top":count_top,
+            "product":count_product,
+            "programmer":count_programmer
+        })
+
+class MemberList(APIView):
+    authentication_classes = []
+    """
+    成员列表
+    """
+
+    def get(self, request, format=None):
+        query = UserInfo.objects.all()
+        s = serializers.UserInfoSerializer(query,many=True)
+        return Response({
+            "data":s.data
+        })
