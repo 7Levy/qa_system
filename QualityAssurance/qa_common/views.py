@@ -108,7 +108,7 @@ class MemberList(APIView):
 class QueryBehavior(APIView):
     authentication_classes = []
     def get(self,request,user_id,format=None):
-        query = BehaviorRecord.objects.filter(user_id=user_id)
+        query = BehaviorRecord.objects.filter(user_id=user_id).order_by('-behavior_time')[:10]
         s = serializers.BehaviorRecordSerializer(query,many=True)
         return Response({
             "data":s.data
