@@ -40,7 +40,6 @@ class AutoInterfaceTest(APIView):
             })
         elif request.data['method']=='POST':
             data = eval(request.data['body'])
-            print(data)
             method_post = MethodPost(request.data['url'],data)
             result = method_post.post_result()
             obj = AutoInterfaceRecord(
@@ -132,10 +131,10 @@ class SendMail(APIView):
     authentication_classes = []
     def get(self,request,receiver_id,*args,**kwargs):
         ret = True
-        security_account = '1571645388@qq.com'  # 发件人邮箱账号
-        security_password = 'uyltirninhczjige'  # 发件人邮箱密码
+        security_account = '1571645388@qq.com'
+        security_password = 'uyltirninhczjige'
         re_obj = UserInfo.objects.get(id=receiver_id)
-        receiver = re_obj.account  # 收件人邮箱账号，我这边发送给自己
+        receiver = re_obj.account
         try:
             result = []
             query = AutoInterfaceRecord.objects.all()
@@ -144,17 +143,15 @@ class SendMail(APIView):
             for i in range(len(data)):
                 msg = str(i+1)+".用例编号"+"["+str(data[i]['test_id'])+"]："+str(data[i]['url'])+" 执行结果为-》"+str(data[i]['reason'])+"接口状态-》"+str(data[i]['code'])+'\r\n'
                 result.append(msg)
-            # result.append(data)
             result = ''.join(result)
             msg = MIMEText("技术团队的成员大家好，本次汇报结果由机器人小e完成："+'\r\n'+str(result), 'plain', 'utf-8')
-            msg['From'] = formataddr(["来自方圻程", security_account])  # 括号里的对应发件人邮箱昵称、发件人邮箱账号
-            msg['To'] = formataddr(["发送至研发团队", receiver])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
-            msg['Subject'] = "测试执行日期" + str(datetime.datetime.now())  # 邮件的主题，也可以说是标题
-
-            server = smtplib.SMTP_SSL("smtp.qq.com", 465)  # 发件人邮箱中的SMTP服务器，端口是465
-            server.login(security_account, security_password)  # 括号中对应的是发件人邮箱账号、邮箱密码
-            server.sendmail(security_account, [receiver, ], msg.as_string())  # 括号中对应的是发件人邮箱账号、收件人邮箱账号、发送邮件
-            server.quit()  # 关闭连接
+            msg['From'] = formataddr(["来自方圻程", security_account])
+            msg['To'] = formataddr(["发送至研发团队", receiver])
+            msg['Subject'] = "测试执行日期" + str(datetime.datetime.now())
+            server = smtplib.SMTP_SSL("smtp.qq.com", 465)
+            server.login(security_account, security_password)
+            server.sendmail(security_account, [receiver, ], msg.as_string())
+            server.quit()
         except Exception:  # 如果 try 中的语句没有执行，则会执行下面的 ret=False
             ret = False
         if ret:

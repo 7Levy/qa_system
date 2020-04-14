@@ -13,7 +13,7 @@ class AutoInterfaceRecord(models.Model):
     method = models.CharField(max_length=255, blank=True, null=True)
     url = models.CharField(max_length=255, blank=True, null=True)
     request_body = models.CharField(max_length=255, blank=True, null=True)
-    response_body = models.CharField(max_length=255, blank=True, null=True)
+    response_body = models.CharField(max_length=1600, blank=True, null=True)
     reason = models.CharField(max_length=255, blank=True, null=True)
     code = models.CharField(max_length=255, blank=True, null=True)
     exec_time = models.DateTimeField(blank=True, null=True)
@@ -21,6 +21,19 @@ class AutoInterfaceRecord(models.Model):
     class Meta:
         managed = False
         db_table = 'auto_interface_record'
+
+
+class BehaviorRecord(models.Model):
+    record_id = models.AutoField(primary_key=True)
+    user_id = models.IntegerField(blank=True, null=True)
+    user_name = models.CharField(max_length=255, blank=True, null=True)
+    ip_addr = models.CharField(max_length=255, blank=True, null=True)
+    behavior = models.CharField(max_length=255, blank=True, null=True)
+    behavior_time = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'behavior_record'
 
 
 class BugDetail(models.Model):
