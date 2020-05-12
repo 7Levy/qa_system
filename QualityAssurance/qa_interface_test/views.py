@@ -132,7 +132,7 @@ class SendMail(APIView):
     def get(self,request,receiver_id,*args,**kwargs):
         ret = True
         security_account = '1571645388@qq.com'
-        security_password = 'uyltirninhczjige'
+        security_password = 'rnprjchtcyxuhifb'
         re_obj = UserInfo.objects.get(id=receiver_id)
         receiver = re_obj.account
         try:
